@@ -1,0 +1,72 @@
+----------------------------------------------- IMAGE
+--membuat image file
+docker build .
+
+--melihat semua image
+docker images
+
+--membuat image dengan detach mode
+docker run -p 3000:80 -d id_image_nya
+
+--menghapus image
+docker rmi id_image_nya
+
+--menghapus multiple image
+docker rmi id_image_1 id_image_2 id_image_3
+
+--melihat detail image
+docker image inspect id_image_nya
+
+--memberi nama(tag) image
+docker build -t nama-image:versi1 .
+
+----------------------------------------------- CONTAINER
+
+--melihat container yg aktif
+docker ps
+
+--melihat semua container 
+docker ps -a
+
+--menjalankan container
+docker run -p 3000:80 id_image_nya
+
+--memulai container
+docker start nama_container
+
+--menghentikan container
+docker stop nama_container
+
+--attach(melihat log) container yg sedang berjalan
+docker attach nama_container
+
+--menghapus container 
+docker rm nama_container
+
+--melihat semua log di container yg sudah di memulai
+docker logs nama_container
+
+--attach(melihat log) container yg sedang berjalan
+docker logs -f nama_container
+
+--membuat & menjalankan container dengan mode interaktif & menampilkan command (bisa interaktif di cmd)
+docker run -it id_image_nya
+
+--menjalankan container dengan mode interaktif & dan attatch mode(hampir sama dengan di atas)
+docker start -a -i nama_container_nya
+
+--menjalankan container dengan detach mode & otomatis terhapus containernya ketika berhenti
+docker run -p 3000:80 -d --rm id_image_nya
+
+----------------------------------------------- COPY FILE, TETAPI COPY FILE TIDAK DI SARANKAN
+
+--mengcopy file dari local directory ke dalam container yg berjalan (cp)
+docker cp nama_folder_local/nama_file_local nama_container:/nama_folder_container
+docker cp nama_folder_local/. nama_container:/nama_folder_container
+
+--mengcopy file dari container yg berjalan ke local directory
+docker cp nama_container:/nama_folder_container nama_folder_local
+
+--memberi nama container (--name)
+docker run -p 3000:80 -d --rm --name nama_container id_image
+docker run -p 3000:80 -d --rm --name nama_container nama_image
