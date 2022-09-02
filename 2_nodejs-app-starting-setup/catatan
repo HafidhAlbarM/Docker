@@ -1,0 +1,42 @@
+--membuat image file
+docker build
+
+--menjalankan container
+docker run -p 3000:80 id_image_nya
+
+--melihat semua image
+docker images
+
+--membuat image dengan detach mode
+docker run -p 3000:80 -d id_image_nya
+
+--menghapus image
+docker rmi image id_image_nya
+
+--melihat container yg aktif
+docker ps
+
+--melihat semua container 
+docker ps -a
+
+--memulai container
+docker start nama_container
+
+--menghentikan container
+docker stop nama_docker
+
+--attach(melihat log) container yg sedang berjalan
+docker attach nama_docker
+
+--menghapus container docker rm nama_container
+
+--melihat semua log di container yg sudah di memulai
+docker logs nama_container
+
+--attach(melihat log) container yg sedang berjalan
+docker logs -f nama_container
+
+--membuat & menjalankan container dengan mode interaktif & menampilkan command (bisa interaktif di cmd)
+docker run -it id_image_nya
+--menjalankan container dengan mode interaktif & dan attatch mode(hampir sama dengan di atas)
+docker start -a -i nama_container_nya
