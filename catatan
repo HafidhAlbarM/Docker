@@ -18,7 +18,13 @@ docker rmi id_image_1 id_image_2 id_image_3
 docker image inspect id_image_nya
 
 --memberi nama(tag) image
-docker build -t nama-image:versi1 .
+docker build -t nama-image:tag-image .
+
+--mengubah nama(tag) image agar bisa di push ke docker hub
+docker tag nama-image-lama:tag-image username/nama-image-baru
+
+--menghapus semua images di local
+docker image prune -a
 
 ----------------------------------------------- CONTAINER
 
@@ -70,3 +76,15 @@ docker cp nama_container:/nama_folder_container nama_folder_local
 --memberi nama container (--name)
 docker run -p 3000:80 -d --rm --name nama_container id_image
 docker run -p 3000:80 -d --rm --name nama_container nama_image
+
+----------------------------------------------------------------------------
+--Push image docker ke Docker Hub
+docker push username/nama-repository
+
+--Pull image dari Docker Hub
+docker pull username/nama-repository
+
+
+----------------------------------------------- VOLUMES
+--melihat volumes
+docker volume ls
