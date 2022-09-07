@@ -86,5 +86,13 @@ docker pull username/nama-repository
 
 
 ----------------------------------------------- VOLUMES
+
+Volume adalah penyimpanan di dalam container
 --melihat volumes
 docker volume ls
+
+anonymous volume ter create saat menambahkan line "VOLUME ["/app/feedback"]" pada docker file
+anonymous volume akan terhapus oleh docker ketika container behenti dan di hapus (--rm)
+
+untuk membuat volume yg tidak akan dihapus oleh docker adalah dengan named volume (-v)
+docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volumes
