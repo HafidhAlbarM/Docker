@@ -91,8 +91,34 @@ Volume adalah penyimpanan di dalam container
 --melihat volumes
 docker volume ls
 
-anonymous volume ter create saat menambahkan line "VOLUME ["/app/feedback"]" pada docker file
-anonymous volume akan terhapus oleh docker ketika container behenti dan di hapus (--rm)
+--Anonymous volume
+--Terikat dalam contaier
+--Anonymous volume adalah volume yg akan terhapus oleh docker ketika container di hapus (-v --rm)
+--Anonymous volume masih ada jika container hanya di stop
+--Anonymous volume bisa di pakai utk node_modules pada node js
+--line "VOLUME ["/app/feedback"]" pada .dockerfile hanya untuk dokumentasi
+docker run -d -p 3000:80 --rm --name feedback-app -v /app/feedback feedback-node:volumes
 
-untuk membuat volume yg tidak akan dihapus oleh docker adalah dengan named volume (-v)
+--Named Volume
+--Tidak terikat dalam contaier
+--membuat volume yg tidak akan dihapus oleh docker ketika container di hapus (-v --rm)
+--bisa berbagi data antar container
 docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volumes
+
+--Bind Mounts
+--Tidak terikat dalam contaier (menyimpan data di host file system, sehingga ada perubahan apapun dalam kode, langusng berubah)
+--Bind mount tidak akan terhapus walau container mati/terhapus
+--bisa berbagi data antar container
+--Menjalankan container dengan bind mounts (di Mac/Linux)
+docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v "C:\Users\Hasbiallah\Documents\Docker\4_data-volumes-01-starting-setup:/app" feedback-node:volumes
+
+--menjalankan container dengan bind mount (di Windows menggunakan Power Shell)
+docker run -d -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app feedback-node:volumes
+
+--mengkombinasikan bind mount & volume (di Windows menggunakan Power Shell)
+docker run -d -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
+
+tambahkan kode dalam package.json agar dapat melihat perubahan log di windows
+"scripts": {
+    "start": "nodemon -L server.js"
+  }
