@@ -118,7 +118,11 @@ docker run -d -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}
 --mengkombinasikan bind mount & volume (di Windows menggunakan Power Shell)
 docker run -d -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
 
-tambahkan kode dalam package.json agar dapat melihat perubahan log di windows
+--tambahkan kode dalam package.json agar dapat melihat perubahan log di windows
 "scripts": {
     "start": "nodemon -L server.js"
   }
+
+--membuat Read Only Volume (menambahkan "ro" (read only) di bind mount)
+--utk mencegah antisipasi agar tidak merubah file kodingan asli di local kita
+docker run -d --rm -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app:ro -v /app/temp -v /app/node_modules feedback-node:volume
