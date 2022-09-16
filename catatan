@@ -116,13 +116,23 @@ docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v "
 docker run -d -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app feedback-node:volumes
 
 --mengkombinasikan bind mount & volume (di Windows menggunakan Power Shell)
-docker run -d -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
+docker run -d --rm -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
 
 --tambahkan kode dalam package.json agar dapat melihat perubahan log di windows
 "scripts": {
     "start": "nodemon -L server.js"
   }
 
---membuat Read Only Volume (menambahkan "ro" (read only) di bind mount)
+--membuat Read Only Volume (menambahkan ":ro" (read only) di bind mount)
 --utk mencegah antisipasi agar tidak merubah file kodingan asli di local kita
-docker run -d --rm -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app:ro -v /app/temp -v /app/node_modules feedback-node:volume
+docker run -d --rm -p 3000:80 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app:ro -v /app/temp -v /app/node_modules feedback-node:volumes
+**ada bug saat create file dengan ":ro", ketika kita mendefinisikan folder node_modules jadi read only, docker gabisa write file ke node_module folder, jadi cara penyelesaiannya, di run dulu tanpa ":ro", terus di hapus lg containernya, terus di run lagi pake ":ro", atau buat folder node_module manual terlebih dahulu
+
+--run container dengan environtment variable di command (--env)
+docker run -d --rm -p 3000:8000 --env PORT=8000 --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
+
+--run container dengan multiple environtment variable di command (--env)
+docker run -d --rm -p 3000:8000 --env PORT=8000 --env API_KEY=http://www.website.com/api --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
+
+--run container dengan membaca environtment variable di .env file (--env-file)
+docker run -d --rm -p 3000:80 --env-file ./.env --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes

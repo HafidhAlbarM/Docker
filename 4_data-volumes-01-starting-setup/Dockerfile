@@ -8,7 +8,11 @@ RUN npm install
 
 COPY . /app
 
-EXPOSE 80
+ARG DEFAULT_PORT_NYA=80
+
+ENV PORT $DEFAULT_PORT_NYA
+
+EXPOSE $PORT
 
 #VOLUME ["/app/feedback"]
 
