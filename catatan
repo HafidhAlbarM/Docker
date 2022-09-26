@@ -136,3 +136,30 @@ docker run -d --rm -p 3000:8000 --env PORT=8000 --env API_KEY=http://www.website
 
 --run container dengan membaca environtment variable di .env file (--env-file)
 docker run -d --rm -p 3000:80 --env-file ./.env --name feedback-app -v feedback:/app/feedback -v ${PWD}:/app -v /app/node_modules feedback-node:volumes
+
+----------------------------------------------- KONEK KE DATABASE
+tambahkan ini untuk koneksi dari docker app ke local database (host.docker.internal:)
+mongodb://host.docker.internal:27017/swfavorites
+
+--konesi untuk terhubung dari docker app container ke alamat IP local komputer (host.docker.internal)
+mongodb://host.docker.internal:27017/swfavorites 
+
+--melihat alamat ip container
+docker container inspect nama-container
+Muncul JSON, cari NetworkSettings -> IPAddress
+
+--koneksi menggunakan alamat ip container untuk komunikasi antar container,di dapat dari IP address container (docker container inspect mongodb)
+mongodb://172.17.0.2:27017/swfavorites
+
+----------------------------------------------- NETWORK
+Mengelompokan beberapa container ke dalam suatu jaringan (issue IP Address)
+Network harus dibuat terlebih dahulu
+
+--membuat network
+docker network create favorites-net
+--menampilkan semua network
+docker network ls
+
+--menjalankan container dalam network
+docker run -d --name mongodb-container --network favorites-net mongo
+docker run -d --name aplikasi-container --network favorites-net -p 3000:3000 aplikasi-image
