@@ -163,3 +163,30 @@ docker network ls
 --menjalankan container dalam network
 docker run -d --name mongodb-container --network favorites-net mongo
 docker run -d --name aplikasi-container --network favorites-net -p 3000:3000 aplikasi-image
+
+----------------------------------------------- REACT JS
+Untuk membuat image React JS, Copy package-lock.json juga, kalau engga, nanti error ERR_SOCKET_TIMEOUT
+I guess adding package-lock.json before tremendously reduces the time to download packages and it's dependencies. Jangan lupa bikin .dockerignore utk node_modules
+
+'
+FROM node:16
+
+WORKDIR /app
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm","start"]
+
+''
+
+----------------------------------------------- Node, Mongo, React JS run docker
+docker run --name mongodb-container --rm -d --network goals-net mongo
+docker run --name goals-backend --rm -d -p 3001:80 --network goals-net goals-node
+docker run --name goals-frontend --rm -p 3000:3000 -it goals-react
