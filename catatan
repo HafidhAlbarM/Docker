@@ -187,6 +187,8 @@ CMD ["npm","start"]
 ''
 
 ----------------------------------------------- Node, Mongo, React JS run docker
-docker run --name mongodb-container --rm -d --network goals-net mongo
-docker run --name goals-backend --rm -d -p 3001:80 --network goals-net goals-node
-docker run --name goals-frontend --rm -p 3000:3000 -it goals-react
+docker run --name mongodb-container -v dataMongo:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=hafidh -e MONGO_INITDB_ROOT_PASSWORD=password mongo
+
+docker run --name goals-backend --rm -d -p 3001:80 -v ${PWD}:/app -v logs:/app/logs -v /app/node_modules --network goals-net --env-file ./.env goals-node
+
+docker run --name goals-frontend -v ${PWD}:/app/src --rm -p 3000:3000 -it goals-react
