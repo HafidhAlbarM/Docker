@@ -187,8 +187,39 @@ CMD ["npm","start"]
 ''
 
 ----------------------------------------------- Node, Mongo, React JS run docker
+--membuat mongodb container
 docker run --name mongodb-container -v dataMongo:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=hafidh -e MONGO_INITDB_ROOT_PASSWORD=password mongo
 
+atau menggunakan env file
+docker run --name mongodb-container -v dataMongo:/data/db --rm -d --network goals-net -e --env-file ./.env mongo
+
+--membuat node js image
+docker build -t goals-node .
+
+--membuat node js container
 docker run --name goals-backend --rm -d -p 3001:80 -v ${PWD}:/app -v logs:/app/logs -v /app/node_modules --network goals-net --env-file ./.env goals-node
 
+--membuat react js container
 docker run --name goals-frontend -v ${PWD}:/app/src --rm -p 3000:3000 -it goals-react
+
+----------------------------------------------- Docker Compose
+-penulisan menggunakan tanda(-) jika key value pairs. Jika tidak, ga usah pakai tanda (-)
+environment:
+  MONGO_INITDB_ROOT_USERNAME: hafidh
+  MONGO_INITDB_ROOT_PASSWORD: password
+env_file:
+  - ./backend/.env
+
+--Kalau pakai docker compose, sudah otomatis membuatkan network utk setiap list container yg dalam dalam file docker compose
+
+--mengcompose docker compose (attach mode)
+docker-compose up
+
+--mengcompose docker compose (dettach mode)
+docker-compose up -d
+
+--menstop & menghapus container
+docker-compose down
+
+--menstop & menghapus container beserta volumenya
+docker-compose down -v

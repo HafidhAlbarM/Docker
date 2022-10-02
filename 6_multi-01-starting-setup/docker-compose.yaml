@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  mongodb-container:
+    container_name: mongodb-container
+    image: "mongo"
+    volumes:
+      - dataMongo:/data/db
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: hafidh
+    #  MONGO_INITDB_ROOT_PASSWORD: password
+    env_file:
+      - ./env/mongo.env
+    # netwok dibuatkan otomatis oleh docker
+    # networks:
+    #   - goals-net
+  backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    #   args:
+    #     some-arg: 1
+    container_name: backend
+    ports:
+      - "3000:80"
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    #environment:
+    #  MONGODB_USERNAME: hafidh
+    #  MONGODB_PASSWORD: password
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb-container
+  #frontend:
+
+volumes:
+  dataMongo:
+  logs:
