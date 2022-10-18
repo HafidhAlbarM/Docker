@@ -223,3 +223,13 @@ docker-compose down
 
 --menstop & menghapus container beserta volumenya
 docker-compose down -v
+
+--mengcompose docker compose dengan build ulang images nya
+docker-compose up --build
+
+--hanya membuild image yg akan di compose
+docker-compose up build
+
+----------------------------------------------- Membuat package.json
+docker run -it -d node
+docker exec -it nama_container npm init

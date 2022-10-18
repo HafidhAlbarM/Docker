@@ -22,7 +22,7 @@ services:
     #     some-arg: 1
     container_name: backend
     ports:
-      - "3000:80"
+      - "3001:80"
     volumes:
       - logs:/app/logs
       - ./backend:/app
@@ -34,7 +34,17 @@ services:
       - ./env/backend.env
     depends_on:
       - mongodb-container
-  #frontend:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
 
 volumes:
   dataMongo:
